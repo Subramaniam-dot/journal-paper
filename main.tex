@@ -1,14 +1,95 @@
-\documentclass{article}
-\usepackage{graphicx} % Required for inserting images
+%% ============================================================================
+%%  Calibrated Posterior WCE Localization at a Four-Receiver MICS/MedRadio Budget
+%%  Full-wave CST simulation study.
+%% ============================================================================
+\documentclass[journal]{IEEEtran}
 
-\title{journal-paper}
-\author{Subramaniam Subramanian Murugesan}
-\date{June 2026}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+
+\sisetup{detect-weight=true,detect-family=true}
+
+\title{A Calibrated Posterior for Wireless Capsule Endoscope Localization at a
+Four-Receiver MICS/MedRadio Budget: A Full-Wave Simulation Study}
+
+\author{Subramaniam~S.~Murugesan,
+Muhammad~Qamar,
+Kamil~Yavuz~Kapusuz,
+Mohamed~A.~Thaha,
+and~Akram~Alomainy
+\thanks{S.~S.~Murugesan, M.~Qamar, and A.~Alomainy are with the School of
+Electronic Engineering and Computer Science, Queen Mary University of London,
+London, U.K. (e-mail: \{s.subramanianmurugesan, m.qamar,
+a.alomainy\}@qmul.ac.uk).}%
+\thanks{K.~Y.~Kapusuz is with the Department of Information Technology,
+IDLab/EM Group, Ghent University/imec, Ghent, Belgium
+(e-mail: kamilyavuz.kapusuz@ugent.be).}%
+\thanks{M.~A.~Thaha is with the Department of Colorectal Surgery, Royal London
+Hospital, Barts Health NHS Trust, London, U.K., and with the Blizard Institute,
+National Bowel Research Centre, Barts and the London School of Medicine \&
+Dentistry, Queen Mary University of London, London, U.K.
+(e-mail: m.a.thaha@qmul.ac.uk).}%
+\thanks{This is a full-wave electromagnetic (CST) simulation study; no
+measured-phantom or in-vivo results are reported.}}
 
 \begin{document}
-
 \maketitle
 
-\section{Introduction}
+\begin{abstract}
+\textbf{This is a full-wave electromagnetic CST Studio Suite (CST) simulation
+study; we report no measured-phantom or in-vivo results.} We study wireless
+capsule endoscope (WCE) localization at a four-receiver budget relevant to the
+Medical Implant Communication Service (MICS)/MedRadio band
+(\SIrange{401}{406}{MHz}). We ask whether such a system can report calibrated
+confidence in capsule position, not only a point estimate. Full-wave channels
+are simulated over a \SIrange{380}{430}{MHz} sweep; strict-legal-band evidence is
+the single-tone magnitude-only ablation. On a corrected cuboid phantom geometry
+(receivers on the $\pm x/\pm z$ vertical walls, no $y$-face coverage) and a
+strictly position-grouped 5-fold cross-validation protocol, we benchmark a
+conditional flow-matching (CFM) posterior against a deterministic regression
+backbone, probabilistic baselines (deep ensemble, MC-dropout, mixture density
+networks, split conformal), and ten classical regressors. Beyond point accuracy,
+the CFM posterior is calibrated: its marginal 50/90/95\% coverages track the
+nominal levels ($0.766/0.935/0.944$ on the held-out initial-stage subset,
+$N=1980$; $0.832/0.970/0.975$ when all combined-set positions are scored by the
+CFM alone), and its predicted spread ranks actual error (Spearman
+$\rho\approx0.60$). Point accuracy is within \SI{0.014}{cm} of the deterministic
+backbone (\SI{0.354}{cm} vs \SI{0.340}{cm} 3D MAE on the combined $N=3935$ set).
+A controlled mirror-symmetric array ablation further indicates, on this
+controlled geometry, that posterior modality tracks forward-operator
+invertibility: the CFM posterior is bimodal when the ablation array makes $y$
+unobservable and unimodal on the main anti-symmetric side-wall array. The same
+posterior width carries the orientation-induced uncertainty measured across five
+axis-aligned capsule poses ($\rho\approx0.85$). A feature-deployability ablation
+locates the single-tone, magnitude-only floor at ${\sim}\SI{1.5}{cm}$ and shows
+that the sub-centimetre regime requires phase-coherent receivers. \textbf{We
+make no claim to state-of-the-art point accuracy}: at the four-receiver
+MICS/MedRadio budget, real-phantom systems are more accurate, and we declare the
+simulation-vs-real and frequency-band confounds explicitly. To our knowledge,
+this is the first flow-matching/generative WCE-RF position posterior with
+empirical multi-level coverage under position-grouped cross-validation.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Wireless capsule endoscopy, RF localization, uncertainty quantification,
+calibration, conformal prediction, conditional flow matching, generative
+posterior, MICS/MedRadio band, simulation-based inference.
+\end{IEEEkeywords}
+
+\input{sections/intro}
+\input{sections/related}
+\input{sections/dataset}
+\input{sections/method}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
 
 \end{document}

@@ -1,0 +1,18 @@
+# LaTeX build artifacts (Overleaf regenerates these)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.log
+build.log
+
+# Python / Node build
+__pycache__/
+*.pyc
+node_modules/

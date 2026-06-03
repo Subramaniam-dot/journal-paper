@@ -1,0 +1,28 @@
+\section{Conclusion}\label{sec:conclusion}
+
+We presented, in full-wave simulation, the calibrated posterior: a
+flow-matching/generative WCE-RF position posterior with empirical multi-level
+coverage under position-grouped cross-validation at a four-receiver MICS/MedRadio
+budget in the legal MICS/MedRadio band \SIrange{401}{406}{MHz}. It is the only
+evaluated method that is simultaneously accurate, well covered from its own
+samples (conservative at 50\%, near-nominal at 90/95\%), and discriminative in
+error-vs-spread. Its posterior mean also preserves deterministic-backbone point
+accuracy within \SI{0.014}{cm} (\SI{0.354}{cm} vs \SI{0.340}{cm}) and beats ten
+classical regressors on identical position-grouped folds. Beyond aggregate
+calibration, we showed two properties unique to a generative posterior: in a
+controlled mirror-symmetric receiver-array ablation its \emph{modality} tracks
+forward-operator invertibility, and on the main dataset its \emph{width} carries
+the aleatoric uncertainty of an unknown capsule orientation. A
+feature-deployability ablation places the
+single-tone magnitude-only floor at ${\sim}\SI{1.5}{cm}$ and attributes the
+sub-centimetre regime to phase coherence rather than bandwidth.
+
+We make no claim to state-of-the-art point accuracy; real-phantom systems at
+higher frequencies are more accurate, and we declare the simulation-vs-real and
+band confounds throughout. To our knowledge, the novelty is the first
+flow-matching/generative WCE-RF position posterior with empirical multi-level
+coverage under position-grouped cross-validation. The next evidence gate is a
+physical-phantom companion that tests whether the posterior remains calibrated on
+\emph{measured} channels under the same position-grouped protocol. We also flag
+a true $SO(3)$ orientation marginal and paired deterministic-backbone predictions
+for a direct CFM-vs-backbone interval as concrete next steps.

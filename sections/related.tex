@@ -1,0 +1,110 @@
+\section{Related Work}\label{sec:related}
+
+This section separates three axes: point-estimator reporting versus calibrated
+posterior reporting, probabilistic precedent, and simulation-first scope relative
+to the subfield norm.
+
+\subsection{WCE RF localization is dominated by point estimators}
+The closest-regime WCE-RF systems are mostly point estimators or filtered point
+tracks. Real-phantom RSSI work at \SI{2.45}{GHz} with four wearable receivers
+reports \SI{2.38}{cm} RMSE~\cite{hasnain2024} and, more recently,
+\SI{1.69}{cm} 3D RMSE~\cite{hasnain2026}; lower-frequency four-receiver work at
+\SI{433}{MHz} reports \SI{1.9}{cm} in simulation and \SI{2.22}{cm} on an
+electromagnetic phantom~\cite{yoshitake2022}. Temporal filtering does appear
+here: the Anzai/Ito lineage evaluates RSSI and hybrid TOA/RSSI particle-filter
+tracking~\cite{anzai2012,ito2013,ito2014,ito2016}, and
+Dmitrieva~\textit{et~al.} evaluate constant-velocity
+interacting-multiple-model extended-Kalman filtering (IMM-EKF) for WCE
+tracking~\cite{dmitrieva2021}. These tracking systems still report point-track
+errors or error CDFs, not empirically calibrated position posteriors or
+multi-level coverage.
+
+The two closest Hasnain phantom studies report ``tracking'' as path RMSE between
+measured path positions and per-snapshot ML predictions. The PDFs do not document
+a Kalman, particle-filter, or Rauch--Tung--Striebel (RTS) smoother.
+Table~\ref{tab:sota} situates our work against the audited landscape. The
+comparison spans heterogeneous regimes---simulation vs phantom vs in-vivo,
+MICS/MedRadio vs ISM vs UWB, differing receiver counts and evaluation
+protocols---so we declare those confounds wherever numbers appear and make no
+like-for-like ranking.
+
+\begin{table*}[t]
+\centering
+\caption{Representative WCE-RF localization landscape. \textbf{Our work is
+full-wave CST simulation.} Regimes and metrics are heterogeneous; this table is
+for positioning, not a like-for-like ranking. The takeaway is that none report
+empirically calibrated multi-level coverage (final column).}
+\label{tab:sota}
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.112\textwidth}
+>{\raggedright\arraybackslash}p{0.118\textwidth}
+>{\raggedright\arraybackslash}p{0.094\textwidth}
+>{\raggedright\arraybackslash}p{0.050\textwidth}
+>{\raggedright\arraybackslash}p{0.126\textwidth}
+>{\raggedright\arraybackslash}p{0.086\textwidth}
+>{\raggedright\arraybackslash}p{0.155\textwidth}
+>{\raggedright\arraybackslash}p{0.151\textwidth}@{}}
+\toprule
+Work & Evidence & Frequency & \#Rx & Protocol & Metric & Reported value & Regime verdict \\
+\midrule
+\textbf{This work} & \textbf{Full-wave sim (CST)} & \textbf{380--430\,MHz full-wave sweep; 401--406\,MHz MICS/MedRadio} & \textbf{4 ($\pm x/\pm z$)} & \textbf{Pos.-grouped 5-fold} & \textbf{3D MAE} & \textbf{0.354\,cm rich; ${\sim}$1.5\,cm mag-only} & internal simulation reference; calibrated coverage; not point-SOTA \\
+Anzai 2012~\cite{anzai2012} & Mixed sim & 400\,MHz MICS & 14 (8 ideal) & MC FDTD + path-loss & 3D RMS & 4\,cm ML (M=3); LS 5\,cm & low-frequency RSSI baseline; no posterior \\
+Ito/Anzai 2013--2016~\cite{ito2013,ito2014,ito2016} & Sim tracking & 400\,MHz MICS; UWB 3.4--4.8\,GHz & 8 & MC / SMC trajectory & RMS track error & 0.7\,cm RSSI PF; 1.3\,mm hybrid TOA/RSSI PF & temporal-filter point-track prior art \\
+Dmitrieva 2021~\cite{dmitrieva2021} & Sim tracking & not stated (RSSI model) & 8 & single simulated track & RMSE & ${\sim}$8\,mm constant-velocity IMM-EKF & temporal-filter point-track prior art \\
+Pourhomayoun 2014~\cite{pourhomayoun2014} & Sim (Monte Carlo) & 406\,MHz MICS & 4--16 & 500 MC runs & RMS error & $<$7\,mm 3D / $<$8.8\,mm 2D & MICS sparse-recovery point estimate \\
+Nadimi 2014~\cite{nadimi2014} & Parametric path-loss sim & not stated & 5 & 1000 MC, RMSE/CRLB & RMSE & 1.6\,mm & Bayesian parametric prior; no empirical coverage \\
+Hiyoshi 2017~\cite{hiyoshi2019} & Sim (FDTD) & 433.92\,MHz & 5 & 792-point grid & pass-rate threshold & $<$40\,mm over full grid; $\ge$80\% within 20\% threshold & low-frequency RSS correction; no mean/RMSE \\
+Yoshitake 2022~\cite{yoshitake2022} & Sim + EM phantom & 433.92\,MHz & 4 & fixed 78+78 points & mean 3D error & 19\,mm sim / 22.2\,mm phantom & close low-frequency comparator \\
+Oleksy 2022/2023~\cite{oleksy2022,oleksy2023} & Sim + phantom / sim & 401--406\,MHz MICS & 4--5 (select 5/9) & fixed positions, CDF/mean & 3D / 2D error & 16\,mm sim; 30\,mm 2D phantom; 42\,mm sim (2023) & MICS PDoA, adaptive body model; no posterior \\
+Xiao 2022~\cite{xiao2022} & Mixed sim + phantom & 433\,MHz & 24--32 & MC sim + 5 phantom pts & 3D RMSE & 2.5\,mm sim; 36.3\,mm phantom & low-frequency WCL; many receivers \\
+Hany 2023~\cite{hany2023} & Parametric path-loss sim & UWB 3.1--6\,GHz & 8--48 & fixed trajectory + CRLB & 3D RMSE & 6.83\,mm @48Rx; 8.7\,mm @8Rx & analytical/path-loss context; no posterior \\
+Narmatha 2022~\cite{narmatha2022} & Hybrid RF+vision sim & UWB path-loss model & 8--80 & MATLAB time-step eval. & ALE / RMSE & 5.41\,mm ALE; 6.76\,mm RMSE & hybrid vision+RF, not RF-only \\
+Barbi 2019~\cite{barbi2019} & Phantom + in-vivo & UWB 3.1--5.1\,GHz & best 3/5; best 10/13 & measured subset selection & 2D / in-vivo error & 0.72\,cm 2D phantom; 0.94\,cm in-vivo & physical-validation reference \\
+Hasnain 2024/2026~\cite{hasnain2024,hasnain2026} & Real phantom & 2.45\,GHz ISM & 4 & random splits & 3D / path RMSE & 2.38\,cm static, 0.38\,cm path; 1.69\,cm static, 0.39\,cm path & real phantom ML point estimators; no posterior \\
+Krishnan 2025~\cite{krishnan2025} & Sim & UWB 4.21--10.77\,GHz & 9--33 & MC error injection + CRLB & 3D RMSE & 1.04\,mm @33Rx & high-Rx UWB TDoA simulation; no posterior \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Bayesian and bound-based prior art}
+The closest probabilistic precedent is Nadimi~\textit{et~al.}~\cite{nadimi2014},
+which combines a Rayleigh-fading, Gamma path-loss-exponent likelihood with
+Gaussian anchor priors and reports ${\sim}\SI{1.6}{mm}$ RMSE over Monte-Carlo
+trials with five anchors. That work is \emph{parametric path-loss simulation} and
+reports RMSE and one-sigma bounds against the Cram\'er--Rao lower bound (CRLB),
+but not empirical multi-level coverage. Bound-based analyses~\cite{ye2014,khan2018,hany2023}
+similarly characterize achievable accuracy analytically rather than delivering a
+calibrated estimator. Our positioning is therefore deliberately narrow and
+verifiable: not ``first Bayesian'' and not ``first temporal filter,'' but, to
+our knowledge, the first flow-matching/generative WCE-RF position posterior with
+empirical multi-level coverage under position-grouped cross-validation,
+including posterior \emph{modality}---a behaviour the single-mode parametric
+likelihoods used in this subfield cannot represent.
+
+\subsection{Generative posteriors and simulation-based inference}
+Treating localization as posterior inference over an intractable forward operator
+places this work in the simulation-based-inference (SBI) and conditional
+generative-model literature. Conditional flow matching~\cite{lipman2023,tong2024}
+learns a continuous-time transport from noise to a data distribution conditioned
+on observations, and conditional generative regressors such as
+CARD~\cite{han2022card} target the full predictive distribution rather than a
+point. We adopt the CFM formulation as our CFM posterior; the architecture itself
+is not the novelty, the \emph{application and the calibration evidence} are.
+
+\subsection{Calibration and conformal prediction}
+Distribution-free calibration via (split) conformal prediction~\cite{vovk2005,romano2019cqr}
+provides finite-sample coverage targets under exchangeability and is the natural
+baseline against which to judge a learned posterior. We include split conformal
+as a baseline; the question we ask of a generative posterior is whether it is
+calibrated \emph{and discriminative} (its width ranks error) without such a
+post-hoc set wrapper.
+
+\subsection{Simulation-first evaluation is standard in this subfield}
+Simulation-first evaluation is the norm in this subfield: nine of the audited
+systems~\cite{anzai2012,ito2014,ito2016,dmitrieva2021,pourhomayoun2014,hiyoshi2019,nadimi2014,ye2014,krishnan2025}
+are simulation or simulation-dominant, published in venues from EMBC to IEEE
+Access, IEICE, and PLoS ONE. Physical-phantom and in-vivo
+work~\cite{barbi2019,yoshitake2022,oleksy2022,xiao2022,hasnain2024,hasnain2026}
+sets the bar for the companion validation we identify as future work.

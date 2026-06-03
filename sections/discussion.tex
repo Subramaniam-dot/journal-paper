@@ -1,0 +1,58 @@
+\section{Discussion}\label{sec:discussion}
+
+\subsection{The contribution is a phenomenon plus a faithful representation}
+CFM is useful here because it preserves point accuracy while representing two
+forms of uncertainty that point estimators hide: calibration error and
+geometry-induced multimodality. First, calibration is not free: among methods
+that produce a posterior, only the clean CFM is simultaneously accurate, well
+covered from its own samples (conservative at 50\%, near-nominal at 90/95\%),
+and discriminative (Table~\ref{tab:uq}); ensembles under-cover and
+mixture-density networks over-cover without ranking. Second,
+posterior \emph{modality} tracks forward-operator invertibility
+(Section~\ref{sec:res-modality}): in the mirror-symmetric ablation the posterior
+is bimodal when $y$ is unobservable, while on the anti-symmetric side-wall array it is unimodal, and only
+the generative flow follows that modality change. A deterministic regressor and
+its implied point estimate cannot represent this at all; and in our ablation the
+tested deep ensemble collapsed while the 2-component mixture-density network
+widened into a single blob rather than splitting, whereas the flow represents
+both hypotheses while preserving point accuracy within \SI{0.014}{cm} of the
+backbone (\SI{0.354}{cm} vs \SI{0.340}{cm}).
+
+\subsection{Why calibration, not point accuracy, is the right target here}
+At the sub-centimetre level, the marginal point-accuracy differences between the
+best methods are small relative to the simulation-to-reality gap, whereas a
+calibrated, discriminative posterior could support clinically relevant
+selective-prediction workflows after phantom and in-vivo validation: it can
+defer or re-measure the least-confident estimates and state where the capsule is
+\emph{not}. This is why we pair the point-accuracy comparison of
+Table~\ref{tab:sota} with the uncertainty comparison of Table~\ref{tab:uq}
+rather than reporting either alone.
+
+\subsection{What scales with data, and what does not}
+On this geometry, point error is largely capped by observability, while
+uncertainty quality continues to improve with data---the calibration and
+ranking metrics strengthen with dataset expansion even where the point error
+barely moves. Future work should recompute data-scaling and capacity sweeps on
+the corrected side-wall geometry before using them to make quantitative claims.
+
+\subsection{Limitations and the next evidence gate}
+\begin{itemize}
+\item \textbf{Simulation only.} No measured-phantom or in-vivo data appear in this
+study. Real-data calibration---does the posterior remain calibrated on measured
+channels?---is the explicit next gate, and a physical-phantom companion is the
+single highest-value follow-up.
+\item \textbf{No $y$-face receivers.} The four-receiver vertical-wall geometry
+leaves the $y$ axis observability-limited; the corrected geometry resolves it in
+simulation, but the hardware asymmetry is real.
+\item \textbf{Phase requires coherent receivers.} The sub-centimetre rich regime
+is not available to a simple single-tone magnitude-only MICS/MedRadio device; the deployable
+magnitude-only floor is ${\sim}\SI{1.5}{cm}$ (Table~\ref{tab:deploy}).
+\item \textbf{Five poses, not $SO(3)$.} Orientation invariance and the
+orientation-marginal posterior are demonstrated on five axis-aligned poses only;
+an arbitrary tilt is untested and the marginal is a five-sample approximation. A
+denser-orientation sweep is specified as future work.
+\item \textbf{Secondary statistics.} The CFM-vs-backbone comparison is reported
+as a tie within seed noise because paired deterministic-backbone predictions
+were not retained. No clinician feedback has yet informed a selective-prediction
+operating threshold.
+\end{itemize}
